@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 
 public class Calculator extends JFrame {
 		
-	private String[] tabString  = {"1", "2", "3", "4", "5", "6", "7", 
-										"8", "9", "0", ".", "=", "C", "+", "-", "*", "/"};
+	private String[] tabString  = {"1", "2", "3", "4", "5", "6", "7", "8", 
+										"9", "0", ".", "=", "C", "+", "-", "*", "/"};
 	private String operator = "";
 	private double tempNumber = 0.0;
 	private boolean moreThanOneNumber = false;
@@ -36,23 +36,33 @@ public class Calculator extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
+		
+		//We call the method that creates the calculator's graphic interface.
 		initCalculator();
 		this.setContentPane(motherPane);
 		this.setVisible(true);
 	}
 	
+	//INITCALCULATOR()
+	//The method that creates the calculator's graphic interface.
 	public void initCalculator() {
-		
 		Font police = new Font("DS-digital", Font.BOLD, 20);
 		screenLabel = new JLabel("0");
 		screenLabel.setFont(police);
-		screenLabel.setPreferredSize(new Dimension(220, 20));
 		screenLabel.setHorizontalAlignment(JLabel.CENTER);
+		screenLabel.setPreferredSize (new Dimension(220, 20));
+		
 		
 		numberPane.setPreferredSize  (new Dimension(165, 225));
 		operatorPane.setPreferredSize(new Dimension(55, 225));
 		screenPane.setPreferredSize  (new Dimension(220, 30));
 		
+		/* We create, set their sizes and distribute the buttons,
+		 * each in it's designated panel.
+		 * But most importantly we add the designated actionListeners 
+		 * to each and everyone of them. Those actionListeners are internal classes
+		 * that we set up below.
+		 */
 		for(int i = 0; i < tabString.length; i++) {
 			tabButton[i] = new JButton(tabString[i]);
 			tabButton[i].setPreferredSize(dim1);
@@ -60,41 +70,48 @@ public class Calculator extends JFrame {
 			case 11 : 
 				tabButton[i].addActionListener(new EqualListener());
 				numberPane.add(tabButton[i]);
+				
 				break;
 				
 			case 12 : 
 				tabButton[i].addActionListener(new ResetListener());
 				tabButton[i].setPreferredSize(dim2);
 				operatorPane.add(tabButton[i]);
+				
 				break;
 				
 			case 13 : 
 				tabButton[i].addActionListener(new AdditionListener());
 				tabButton[i].setPreferredSize(dim2);
 				operatorPane.add(tabButton[i]);
+				
 				break;
 				
 			case 14 :
 				tabButton[i].addActionListener(new SubstractionListener());
 				tabButton[i].setPreferredSize(dim2);
 				operatorPane.add(tabButton[i]);
+				
 				break;
 				
 			case 15 :
 				tabButton[i].addActionListener(new MultiplicationListener());
 				tabButton[i].setPreferredSize(dim2);
 				operatorPane.add(tabButton[i]);
+				
 				break;
 				
 			case 16 :
 				tabButton[i].addActionListener(new DivisionListener());
 				tabButton[i].setPreferredSize(dim2);
 				operatorPane.add(tabButton[i]);
+				
 				break;
 				
 			default :
 				tabButton[i].addActionListener(new NumberListener());
 				numberPane.add(tabButton[i]);
+				
 				break;
 			}
 		}
@@ -105,25 +122,24 @@ public class Calculator extends JFrame {
 		motherPane.add(operatorPane, BorderLayout.EAST);
 	}
 	
+	//CALCULATE()
+	//The method that will transform the user inputs into mathematical operations.
 	public void Calculate() {
 		switch(operator) {
 		case "+" :
 			tempNumber = tempNumber + Double.parseDouble(screenLabel.getText());
-			
 			screenLabel.setText(Double.toString(tempNumber));
 			
 			break;
 			
 		case "-" :
 			tempNumber = tempNumber - Double.parseDouble(screenLabel.getText());
-			
 			screenLabel.setText(Double.toString(tempNumber));
 			
 			break;
 			
 		case "*" :
 			tempNumber = tempNumber * Double.parseDouble(screenLabel.getText());
-			
 			screenLabel.setText(Double.toString(tempNumber));
 			
 			break;
@@ -131,9 +147,7 @@ public class Calculator extends JFrame {
 		case "/" :
 			try {
 				tempNumber = tempNumber / Double.parseDouble(screenLabel.getText());
-				
 				screenLabel.setText(Double.toString(tempNumber));
-				
 			} 
 			catch (ArithmeticException e) { screenLabel.setText("0"); }
 			
@@ -141,16 +155,19 @@ public class Calculator extends JFrame {
 		}
 	}
 	
+	//THE ACTIONLISTNERS
+	
+	//EQUAL
 	class EqualListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			Calculate();
 			moreThanOneNumber = false;
-			newNumber = true;
-			
+			newNumber = true;	
 		}		
 	}
 	
+	//RESET
 	class ResetListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
@@ -162,6 +179,7 @@ public class Calculator extends JFrame {
 		}		
 	}
 	
+	//ADDITION
 	class AdditionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
@@ -179,6 +197,7 @@ public class Calculator extends JFrame {
 		}		
 	}
 	
+	//SUBSTRACTION
 	class SubstractionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
@@ -196,6 +215,7 @@ public class Calculator extends JFrame {
 		}		
 	}
 	
+	//MULTIPLICATION
 	class MultiplicationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
@@ -209,11 +229,11 @@ public class Calculator extends JFrame {
 			else {
 				Calculate();
 				screenLabel.setText(Double.toString(tempNumber));
-			}
-			
+			}	
 		}		
 	}
 	
+	//DIVISION
 	class DivisionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
@@ -231,6 +251,7 @@ public class Calculator extends JFrame {
 		}		
 	}
 	
+	//REGULAR NUMBERS
 	class NumberListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
